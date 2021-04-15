@@ -1,0 +1,89 @@
+---
+title: "HermitCraft Turf War Visualizations"
+output: html_notebook
+---
+
+
+## Setup
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+rm(list = ls())
+```
+
+```{r}
+# Read in data
+TurfWar <- readr::read_csv("data/HCTurfWar.csv")
+
+TurfWar <- TurfWar %>% rename(ID = "X1")
+TurfWar
+```
+
+## Data Exploration
+
+### Members of each side of the war
+
+```{r}
+# The HermitCraft Environmental Protection (Agency) Members
+hep <- TurfWar %>%
+  filter(allegiance == "hep") %>%
+  distinct(hermit)
+hep
+
+# The Mycelium Resistance Members
+resistance <- TurfWar %>%
+  filter(allegiance == "resistance") %>%
+  distinct(hermit)
+resistance
+```
+
+
+
+### Visualization
+
+Grian first declared war on grass in his episode "Hermitcraft 7: Episode 37 - RULES & BARGE BOXES" on 2020-08-13. Let's look at how often people mentioned the war from that date onwards.
+
+```{r, fig.width = 15, fig.height = 9}
+# events
+RBaseUnderBarge <- as.Date("2020-09-15")
+RMainBase <- as.Date("2020-10-04") 
+HFounded <- as.Date("2020-10-09")
+RBuysThrone <- as.Date("2020-10-25")
+FakeHQFound <- as.Date("2020-10-30")
+RealHQFound <- as.Date("2020-11-14")
+RNewHQ <- as.Date("2020-11-21")
+MinigamesStart <- as.Date("2020-12-03")
+WarEnds <- as.Date("2020-12-20")
+
+TurfWar %>%
+  ggplot(aes(x = date, y = count)) +
+  geom_line(aes(color = allegiance)) +
+  geom_smooth(size = 1, alpha = 0.2, color="orange", fill="#69b3a2", se=TRUE) +
+  
+  
+  # events
+  geom_label(x = RBaseUnderBarge, y = 75, size = 3, color="steelblue", aes(fontface = "bold", label="Resistance Recruitment\nBase under The Barge")) +
+  geom_label(x = RMainBase, y = 85, size = 3, color="steelblue", aes(fontface = "bold", label="Main Resistance Base Constructed")) +
+  geom_label(x = HFounded, y = 80, size = 3, color="steelblue", aes(fontface = "bold", label="HEP Founded")) +
+  geom_label(x = RBuysThrone, y = 75, size = 3, color="steelblue", aes(fontface = "bold", label="The Resistance buys\nthe Diamond Throne")) +
+  geom_label(x = FakeHQFound, y = 81, size = 3, color="steelblue", aes(fontface = "bold", label="Fake HQ Found")) +
+  geom_label(x = RealHQFound, y = 85, size = 3, color="steelblue", aes(fontface = "bold", label="Real HQ Found")) +
+  geom_label(x = RNewHQ, y = 74, size = 3, color="steelblue", aes(fontface = "bold", label="Mushroom Castle \nResistance HQ Built")) +
+  geom_label(x = MinigamesStart, y = 81, size = 3, color="steelblue", aes(fontface = "bold", label="Minigames Showdown\nconstruction begins")) +
+  geom_label(x = WarEnds, y = 75, size = 3, color="steelblue", aes(fontface = "bold", label="The Mycelium Resistance\nwins the war")) +
+  
+  
+
+  # labels
+  labs(title = "HermitCraft S7 Turf War Popularity", subtitle = "Number of mentions of the war per episode for both sides") +
+  ylab("# Mentions") +
+  xlab("Date of episode") +
+  
+  # other
+  theme_minimal() +
+  scale_color_manual(values = c("darkgreen", "purple")) +
+  ylim(0, 85)
+
+```
+
