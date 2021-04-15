@@ -77,7 +77,7 @@ TurfWar %>%
 
   # labels
   labs(title = "HermitCraft S7 Turf War Popularity", subtitle = "Number of mentions of the war per episode for both sides") +
-  ylab("# Mentions") +
+  ylab("# Mentions of Turf War") +
   xlab("Date of episode") +
   
   # other

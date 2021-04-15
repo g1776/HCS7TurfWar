@@ -7,7 +7,7 @@ import pickle
 
 ##### CONSTANTS
 
-api = Api(api_key='AIzaSyBSkCRXhcWo4p-dv-mYmJSRFZ8RO_XRd9U')
+api = Api(api_key='secret-key-goes-here')
 
 # Groups from
 # https://hermitcraft.fandom.com/wiki/Season_7_Turf_War#Groups
